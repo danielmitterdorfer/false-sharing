@@ -1,0 +1,45 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'shadow'
+
+version = '0.1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+idea {
+	module {
+	    downloadJavadoc = true
+	    downloadSources = true
+	}
+}
+
+idea {
+    project {
+        languageLevel = '1.8'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.openjdk.jmh', name: 'jmh-core', version: '0.4.2'
+    compile group: 'org.openjdk.jol', name: 'jol-core', version: '0.1'
+}
+
+//see https://github.com/johnrengelman/shadow
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
+    }
+}
+
+shadow {
+    transformer(com.github.jengelman.gradle.plugins.shadow.transformers.ManifestResourceTransformer) {
+        attributes(['Main-Class' : 'org.openjdk.jmh.Main'])
+    }
+}

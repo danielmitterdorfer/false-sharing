@@ -1,0 +1,5 @@
+Approach,Operation,Throughput
+@Contented,Read,2338.015
+@Contented,Write,371.082
+False Sharing,Read,813.92
+False Sharing,Write,373.517
