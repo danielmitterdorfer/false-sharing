@@ -16,7 +16,7 @@ git clone https://github.com/danielmitterdorfer/false-sharing.git
 cd false-sharing
 gradle shadow
 java -jar build/distributions/false-sharing-0.1.0-shadow.jar -rf csv -rff false-sharing.csv
-
+```
 
 # License
 
