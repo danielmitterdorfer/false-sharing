@@ -21,14 +21,14 @@ public class ContendedAccessMicroBenchmark {
 
     @Group("contended")
     @GroupThreads(1)
-    @GenerateMicroBenchmark
+    @Benchmark
     public void produce(ContendedState s) {
         s.write++;
     }
 
     @Group("contended")
     @GroupThreads(3)
-    @GenerateMicroBenchmark
+    @Benchmark
     public long consume(ContendedState s) {
         return s.read;
     }

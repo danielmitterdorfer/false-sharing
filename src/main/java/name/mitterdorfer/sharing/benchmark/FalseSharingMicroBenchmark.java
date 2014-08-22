@@ -19,14 +19,14 @@ public class FalseSharingMicroBenchmark {
 
     @Group("false_sharing")
     @GroupThreads(1)
-    @GenerateMicroBenchmark
+    @Benchmark
     public void produce(FalselySharedState s) {
         s.write++;
     }
 
     @Group("false_sharing")
     @GroupThreads(3)
-    @GenerateMicroBenchmark
+    @Benchmark
     public long consume(FalselySharedState s) {
         return s.read;
     }

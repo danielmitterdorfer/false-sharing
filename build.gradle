@@ -1,16 +1,33 @@
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'shadow'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 version = '0.1.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-idea {
-	module {
-	    downloadJavadoc = true
-	    downloadSources = true
-	}
+// emulate scope 'provided' in Gradle - see http://blog.codeaholics.org/2012/emulating-mavens-provided-scope-in-gradle/
+configurations {
+    provided
+}
+
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext.jmhVersion = '0.9.7'
+ext.jolVersion = '0.1'
+
+dependencies {
+    compile "org.openjdk.jmh:jmh-core:$jmhVersion"
+    provided "org.openjdk.jmh:jmh-generator-annprocess:$jmhVersion"
+    compile "org.openjdk.jol:jol-core:$jolVersion"
 }
 
 idea {
@@ -19,13 +36,15 @@ idea {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile group: 'org.openjdk.jmh', name: 'jmh-core', version: '0.4.2'
-    compile group: 'org.openjdk.jol', name: 'jol-core', version: '0.1'
+idea {
+    module {
+        // support provided scope in IDEA:
+        // See also http://www.gradle.org/docs/current/dsl/org.gradle.plugins.ide.idea.model.IdeaModule.html
+        scopes.PROVIDED.plus += [configurations.provided]
+        //avoid duplicate entries in provided scope (i.e. jmh-core)
+        //scopes.PROVIDED.minus += [configurations.compile]
+        downloadSources = true
+    }
 }
 
 //see https://github.com/johnrengelman/shadow
@@ -34,12 +53,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:0.8'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.0.2'
     }
 }
 
-shadow {
-    transformer(com.github.jengelman.gradle.plugins.shadow.transformers.ManifestResourceTransformer) {
-        attributes(['Main-Class' : 'org.openjdk.jmh.Main'])
+jar {
+    manifest {
+        attributes("Main-Class": "org.openjdk.jmh.Main")
     }
 }

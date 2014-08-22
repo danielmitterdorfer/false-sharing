@@ -7,7 +7,7 @@ This is a small demo project for the accompanying blog post [False Sharing](http
 
 ## Prerequisites
 
-The project requires at least JDK 8 and Gradle 1.8.
+The project requires at least JDK 8 and Gradle 2.0.
 
 ## Installation and Usage
 
@@ -15,7 +15,7 @@ The project requires at least JDK 8 and Gradle 1.8.
 git clone https://github.com/danielmitterdorfer/false-sharing.git
 cd false-sharing
 gradle shadow
-java -jar build/distributions/false-sharing-0.1.0-shadow.jar -rf csv -rff false-sharing.csv
+java -jar build/libs/false-sharing-0.1.0-all.jar -rf csv -rff false-sharing.csv
 ```
 
 # License
